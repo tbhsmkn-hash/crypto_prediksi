@@ -146,9 +146,8 @@ if run_button:
     with st.spinner(
         "Training Auto ARIMA + Bayesian SVR..."
     ):
-
         results = train_hybrid_model(
-            feature_df
+            feature_df,
             benchmark_rows = []
         )
 
