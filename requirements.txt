@@ -1,6 +1,8 @@
 Flask
 pmdarima
 gunicorn
+scikit-learn
+scikit-optimize
 numpy
 pandas
 pyngrok
