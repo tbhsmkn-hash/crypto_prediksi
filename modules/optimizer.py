@@ -3,7 +3,7 @@ from skopt import BayesSearchCV
 from skopt.space import Real
 
 
-def optimize_svr(X_train, y_train):
+def optimize_svr(X_train, y_train, n_iter=30, cv_fold=5 ):
 
     search_space = {
         "C": Real(
@@ -26,18 +26,12 @@ def optimize_svr(X_train, y_train):
     }
 
     optimizer = BayesSearchCV(
-        estimator=SVR(kernel="rbf"),
-
+        estimator=SVR(),
         search_spaces=search_space,
-
-        n_iter=20,
-
-        cv=3,
-
+        n_iter=n_iter,
+        cv=cv_fold,
         n_jobs=-1,
-
-        random_state=42,
-
+        #random_state=42,
         scoring="neg_mean_absolute_error"
     )
 

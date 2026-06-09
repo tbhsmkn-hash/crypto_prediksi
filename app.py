@@ -39,11 +39,10 @@ st.set_page_config(
 # HEADER
 # =====================================================
 
-st.title("📈 Hybrid ARIMA-SVR Cryptocurrency Forecasting")
+st.title("📈 Crypto Forecasting with Hybrid ARIMA-SVR")
 
 st.markdown("""
 Sistem Prediksi Cryptocurrency menggunakan:
-
 - Auto ARIMA
 - Bayesian Optimized SVR
 - Hybrid ARIMA-SVR
@@ -76,11 +75,38 @@ forecast_days = st.sidebar.slider(
     max_value=30,
     value=7
 )
+st.sidebar.subheader(
+    "⚙️ ARIMA Parameters"
+)
+
+seasonal = st.sidebar.checkbox(
+    "Seasonal ARIMA",
+    value=False
+)
+
+st.sidebar.subheader(
+    "⚙️ Bayesian SVR"
+)
+
+n_iter = st.sidebar.slider(
+    "Optimization Iterations",
+    10,
+    100,
+    30
+)
+
+cv_fold = st.sidebar.slider(
+    "Cross Validation Fold",
+    2,
+    10,
+    5
+)
 
 run_button = st.sidebar.button(
     "🚀 Run Prediction",
     use_container_width=True
 )
+
 
 # =====================================================
 # MAIN PROCESS
@@ -135,8 +161,12 @@ if run_button:
     with st.spinner(
         "Training Auto ARIMA + Bayesian SVR..."
     ):
+        # MODEL TRAINING
         results = train_hybrid_model(
-            feature_df
+            feature_df,
+            seasonal=seasonal,
+            n_iter=n_iter,
+            cv_fold=cv_fold
            # benchmark_rows = []
         )
 
@@ -314,6 +344,72 @@ if run_button:
     "R2":hybrid_metric["R2"],
     "DA":hybrid_da
     })
+    benchmark_df = pd.DataFrame(
+        benchmark_rows
+    )
+    st.subheader(
+        "📊 Benchmark Model"
+    )
+    st.dataframe(
+        benchmark_df,
+        width="stretch"
+    )
+# otomatis paramater
+    best_rmse = benchmark_df.loc[
+        benchmark_df["RMSE"].idxmin()
+    ]
+    best_mae = benchmark_df.loc[
+        benchmark_df["MAE"].idxmin()
+    ]
+    best_mape = benchmark_df.loc[
+        benchmark_df["MAPE"].idxmin()
+    ]
+    best_r2 = benchmark_df.loc[
+        benchmark_df["R2"].idxmax()
+    ]
+    best_da = benchmark_df.loc[
+        benchmark_df["DA"].idxmax()
+    ]
+    
+    st.subheader(
+        "🏆 Kesimpulan Benchmark"
+    )
+    st.success(f"""
+               RMSE Terbaik : {best_rmse['Model']}
+               ({best_rmse['RMSE']:.4f})
+               MAE Terbaik : {best_mae['Model']}
+               ({best_mae['MAE']:.4f})
+               MAPE Terbaik : {best_mape['Model']}
+               ({best_mape['MAPE']:.4f}%)
+               R² Terbaik : {best_r2['Model']}
+               ({best_r2['R2']:.4f})
+               Direction Accuracy Terbaik :
+               {best_da['Model']}
+               ({best_da['DA']:.2f}%)"""
+    )
+# rangking model
+    benchmark_df["Rank"] = (
+        benchmark_df["RMSE"].rank() +
+        benchmark_df["MAE"].rank() +
+        benchmark_df["MAPE"].rank() +
+        benchmark_df["R2"].rank(
+            ascending=False
+        ) +
+        benchmark_df["DA"].rank(
+            ascending=False
+        )
+    )
+
+    best_model = benchmark_df.loc[
+        benchmark_df["Rank"].idxmin()
+    ]
+
+    st.info(
+        f"""
+        Model Terbaik Keseluruhan:
+        {best_model['Model']}
+        """
+    )
 
     # =================================================
     # MODEL INFO
