@@ -6,3 +6,4 @@ scikit-optimize
 numpy
 pandas
 pyngrok
+plotly>=5.24.0
