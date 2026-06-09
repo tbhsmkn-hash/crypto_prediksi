@@ -136,8 +136,8 @@ if run_button:
         "Training Auto ARIMA + Bayesian SVR..."
     ):
         results = train_hybrid_model(
-            feature_df,
-           3 benchmark_rows = []
+            feature_df
+           # benchmark_rows = []
         )
 
     st.success(
