@@ -10,8 +10,8 @@ from modules.indicators import (
     add_features
 )
 from modules.hybrid_model import (
-    train_model,
-    predict_model
+    train_hybrid_model,
+    future_forecast
 )
 from modules.metrics import (
     calculate_metrics,
@@ -318,19 +318,12 @@ arima_da = directional_accuracy(
     results["test_actual"].values,
     results["arima_test"]
 )
-
 benchmark_rows.append({
-
     "Model":"ARIMA",
-
     "RMSE":arima_metric["RMSE"],
-
     "MAE":arima_metric["MAE"],
-
     "MAPE":arima_metric["MAPE"],
-
     "R2":arima_metric["R2"],
-
     "DA":arima_da
 })
 
@@ -346,17 +339,11 @@ svr_da = directional_accuracy(
 )
 
 benchmark_rows.append({
-
     "Model":"SVR",
-
     "RMSE":svr_metric["RMSE"],
-
     "MAE":svr_metric["MAE"],
-
     "MAPE":svr_metric["MAPE"],
-
     "R2":svr_metric["R2"],
-
     "DA":svr_da
 })
 
@@ -371,16 +358,10 @@ hybrid_da = directional_accuracy(
 )
 # hybrid
 benchmark_rows.append({
-
     "Model":"Hybrid ARIMA-SVR",
-
     "RMSE":hybrid_metric["RMSE"],
-
     "MAE":hybrid_metric["MAE"],
-
     "MAPE":hybrid_metric["MAPE"],
-
     "R2":hybrid_metric["R2"],
-
     "DA":hybrid_da
 })
