@@ -11,27 +11,20 @@ FEATURE_COLUMNS = [
     "Lag_3",
     "Lag_7",
     "Lag_14",
-
     "SMA_7",
     "SMA_14",
-
     "EMA_7",
     "EMA_14",
-
     "RSI_14",
-
     "Return_1",
     "Return_7",
-
     "Volatility_7"
 ]
 #main hybrid function
 def train_hybrid_model(df):
     split_index = int(len(df) * 0.80)
-
     train_df = df.iloc[:split_index]
     test_df = df.iloc[split_index:]
-
     train_close = train_df["Close"]
     test_close = test_df["Close"]
     # arima model
@@ -46,7 +39,6 @@ def train_hybrid_model(df):
         arima_model.predict_in_sample(),
         index=train_close.index
     )
-
     residual_train = (
         train_close -
         arima_train_pred
@@ -125,14 +117,13 @@ def train_hybrid_model(df):
             hybrid_test_pred
     }
     # forecast masa depan
-    def future_forecast(
-        model_result,
-        periods=7
-    ):
-    
-        arima_model = model_result[
-            "arima_model"
-        ]
+def future_forecast(
+    model_result,
+    periods=7
+):
+    arima_model = model_result[
+    "arima_model"
+    ]
     
         future_pred = arima_model.predict(
             n_periods=periods
@@ -140,10 +131,10 @@ def train_hybrid_model(df):
     
         return future_pred
     
-    def create_train_test_split(
-        df,
-        train_size=0.80
-    ):
+def create_train_test_split(
+    df,
+    train_size=0.80
+):
         split_index = int(
             len(df) * train_size
         )
