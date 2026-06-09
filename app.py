@@ -10,8 +10,8 @@ from modules.indicators import (
     add_features
 )
 from modules.hybrid_model import (
-    train_hybrid_model,
-    future_forecast
+    train_model,
+    predict_model
 )
 from modules.metrics import (
     calculate_metrics,
