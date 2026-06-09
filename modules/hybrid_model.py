@@ -135,12 +135,13 @@ def create_train_test_split(
     df,
     train_size=0.80
 ):
-        split_index = int(
-            len(df) * train_size
-        )
-        train_df = df.iloc[:split_index]
-        test_df = df.iloc[split_index:]
-        return train_df, test_df
+    split_index = int(
+    len(df) * train_size
+    )
+    train_df = df.iloc[:split_index]
+    test_df = df.iloc[split_index:]
+    return train_df, test_df
+
     # ===================================
     # SVR ONLY MODEL
     # ===================================
