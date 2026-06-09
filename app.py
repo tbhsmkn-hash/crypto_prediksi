@@ -262,8 +262,8 @@ if run_button:
         mime="text/csv"
     )
     arima_metric = calculate_metrics(
-    results["test_actual"],
-    results["arima_test"]
+        results["test_actual"],
+        results["arima_test"]
     )
     # arima
     arima_da = directional_accuracy(
