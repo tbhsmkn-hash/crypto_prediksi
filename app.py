@@ -137,7 +137,7 @@ if run_button:
     ):
         results = train_hybrid_model(
             feature_df,
-            benchmark_rows = []
+           3 benchmark_rows = []
         )
 
     st.success(
