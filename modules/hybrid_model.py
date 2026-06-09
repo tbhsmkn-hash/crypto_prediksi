@@ -97,24 +97,17 @@ def train_hybrid_model(df):
     )
     # Return Object
     return {
-        "arima_model":
-            arima_model,
-        "svr_model":
-            svr_model,
-        "scaler":
-            scaler,
-        "train_actual":
-            train_close,
-        "test_actual":
-            test_close,
-        "arima_train":
-            arima_train_pred,
-        "hybrid_train":
-            hybrid_train_pred,
-        "arima_test":
-            arima_test_forecast,
-        "hybrid_test":
-            hybrid_test_pred
+        "arima_model":arima_model,
+        "svr_model":svr_model,
+        "scaler":scaler,
+        "train_actual":train_close,
+        "test_actual":test_close,
+        "svr_test": svr_test_pred,
+        "hybrid_test": hybrid_test_pred,
+        "arima_train":arima_train_pred,
+        "hybrid_train":hybrid_train_pred,
+        "arima_test":arima_test_forecast,
+        "hybrid_test":hybrid_test_pred
     }
     # forecast masa depan
 def future_forecast(
