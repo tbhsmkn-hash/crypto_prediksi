@@ -87,34 +87,25 @@ run_button = st.sidebar.button(
 # =====================================================
 
 if run_button:
-
     with st.spinner("Downloading market data..."):
-
         raw_df = get_crypto_data(
             selected_coin,
             days_history
         )
-
     if raw_df.empty:
-
         st.error("Data tidak tersedia.")
         st.stop()
-
     st.success("Dataset berhasil dimuat")
-
     # =================================================
     # DATA PREVIEW
     # =================================================
-
     st.subheader("Dataset Preview")
-
     st.dataframe(
         raw_df.tail(20),
         use_container_width=True
     )
 
     csv_data = raw_df.to_csv().encode("utf-8")
-
     st.download_button(
         label="📥 Download Dataset CSV",
         data=csv_data,
@@ -127,7 +118,6 @@ if run_button:
     # =================================================
 
     with st.spinner("Building features..."):
-
         feature_df = add_features(
             raw_df
         )
@@ -142,7 +132,6 @@ if run_button:
     # =================================================
     # TRAIN MODEL
     # =================================================
-
     with st.spinner(
         "Training Auto ARIMA + Bayesian SVR..."
     ):
@@ -160,9 +149,7 @@ if run_button:
     # =================================================
 
     actual = results["test_actual"]
-
     hybrid_pred = results["hybrid_test"]
-
     metric = calculate_metrics(
         actual,
         hybrid_pred
@@ -178,7 +165,6 @@ if run_button:
     )
 
     col1, col2, col3, col4, col5 = st.columns(5)
-
     col1.metric(
         "RMSE",
         f"{metric['RMSE']:,.4f}"
@@ -265,7 +251,6 @@ if run_button:
     # =================================================
     # DOWNLOAD FORECAST
     # =================================================
-
     forecast_csv = forecast_df.to_csv(
         index=False
     ).encode("utf-8")
@@ -276,6 +261,40 @@ if run_button:
         file_name=f"{selected_symbol}_forecast.csv",
         mime="text/csv"
     )
+    arima_metric = calculate_metrics(
+    results["test_actual"],
+    results["arima_test"]
+    )
+    # arima
+    arima_da = directional_accuracy(
+        results["test_actual"].values,
+        results["arima_test"]
+    )
+    benchmark_rows.append({
+        "Model":"ARIMA",
+        "RMSE":arima_metric["RMSE"],
+        "MAE":arima_metric["MAE"],
+        "MAPE":arima_metric["MAPE"],
+        "R2":arima_metric["R2"],
+        "DA":arima_da
+    })
+    # svr
+    svr_metric = calculate_metrics(
+        results["test_actual"],
+        results["svr_test"]
+    )
+    svr_da = directional_accuracy(
+        results["test_actual"].values,
+        results["svr_test"]
+    )
+    benchmark_rows.append({
+        "Model":"SVR",
+        "RMSE":svr_metric["RMSE"],
+        "MAE":svr_metric["MAE"],
+        "MAPE":svr_metric["MAPE"],
+        "R2":svr_metric["R2"],
+        "DA":svr_da
+    })
 
     # =================================================
     # MODEL INFO
@@ -304,48 +323,9 @@ if run_button:
     )
 
 else:
-
     st.info(
         "Pilih parameter lalu klik Run Prediction."
     )
-
-arima_metric = calculate_metrics(
-    results["test_actual"],
-    results["arima_test"]
-)
-# arima
-arima_da = directional_accuracy(
-    results["test_actual"].values,
-    results["arima_test"]
-)
-benchmark_rows.append({
-    "Model":"ARIMA",
-    "RMSE":arima_metric["RMSE"],
-    "MAE":arima_metric["MAE"],
-    "MAPE":arima_metric["MAPE"],
-    "R2":arima_metric["R2"],
-    "DA":arima_da
-})
-
-# svr
-svr_metric = calculate_metrics(
-    results["test_actual"],
-    results["svr_test"]
-)
-
-svr_da = directional_accuracy(
-    results["test_actual"].values,
-    results["svr_test"]
-)
-
-benchmark_rows.append({
-    "Model":"SVR",
-    "RMSE":svr_metric["RMSE"],
-    "MAE":svr_metric["MAE"],
-    "MAPE":svr_metric["MAPE"],
-    "R2":svr_metric["R2"],
-    "DA":svr_da
-})
 
 hybrid_metric = calculate_metrics(
     results["test_actual"],
