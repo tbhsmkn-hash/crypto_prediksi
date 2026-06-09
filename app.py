@@ -265,6 +265,7 @@ if run_button:
         results["test_actual"],
         results["arima_test"]
     )
+    benchmark_rows = []
     # arima
     arima_da = directional_accuracy(
         results["test_actual"].values,
