@@ -295,6 +295,24 @@ if run_button:
         "R2":svr_metric["R2"],
         "DA":svr_da
     })
+    # hybrid 
+    hybrid_metric = calculate_metrics(
+        results["test_actual"],
+        results["hybrid_test"]
+    )
+    
+    hybrid_da = directional_accuracy(
+        results["test_actual"].values,
+        results["hybrid_test"]
+    )
+    benchmark_rows.append({
+    "Model":"Hybrid ARIMA-SVR",
+    "RMSE":hybrid_metric["RMSE"],
+    "MAE":hybrid_metric["MAE"],
+    "MAPE":hybrid_metric["MAPE"],
+    "R2":hybrid_metric["R2"],
+    "DA":hybrid_da
+    })
 
     # =================================================
     # MODEL INFO
@@ -326,22 +344,3 @@ else:
     st.info(
         "Pilih parameter lalu klik Run Prediction."
     )
-
-hybrid_metric = calculate_metrics(
-    results["test_actual"],
-    results["hybrid_test"]
-)
-
-hybrid_da = directional_accuracy(
-    results["test_actual"].values,
-    results["hybrid_test"]
-)
-# hybrid
-benchmark_rows.append({
-    "Model":"Hybrid ARIMA-SVR",
-    "RMSE":hybrid_metric["RMSE"],
-    "MAE":hybrid_metric["MAE"],
-    "MAPE":hybrid_metric["MAPE"],
-    "R2":hybrid_metric["R2"],
-    "DA":hybrid_da
-})
