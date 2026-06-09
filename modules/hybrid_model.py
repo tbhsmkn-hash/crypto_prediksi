@@ -138,26 +138,24 @@ def create_train_test_split(
     # ===================================
     # SVR ONLY MODEL
     # ===================================
-    
-    # svr_only = optimize_svr(
-    #     X_train_scaled,
-    #     train_close.values
-    # )
-    # svr_test_pred = svr_only.predict(
-    #     X_test_scaled
-    # )
-    # # return dictionary
-    # return {
-    #     "arima_model": arima_model,
-    #     "svr_model": svr_model,
-    #     "svr_only_model": svr_only,
-    #     "scaler": scaler,
-    #     "train_actual": train_close,
-    #     "test_actual": test_close,
-    #     "arima_train": arima_train_pred,
-    #     "hybrid_train": hybrid_train_pred,
-    #     "arima_test": arima_test_forecast,
-    #     "svr_test": svr_test_pred,
-    #     "hybrid_test": hybrid_test_pred
-    # }
-
+    svr_only = optimize_svr(
+        X_train_scaled,
+        train_close.values
+    )
+    svr_test_pred = svr_only.predict(
+        X_test_scaled
+    )
+    # return dictionary
+    return {
+        "arima_model": arima_model,
+        "svr_model": svr_model,
+        "svr_only_model": svr_only_model,
+        "scaler": scaler,
+        "train_actual": train_close,
+        "test_actual": test_close,
+        "arima_train": arima_train_pred,
+        "hybrid_train": hybrid_train_pred,
+        "arima_test": arima_test_forecast,
+        "svr_test": svr_test_pred,
+        "hybrid_test": hybrid_test_pred
+    }
