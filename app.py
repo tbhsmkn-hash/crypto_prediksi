@@ -6,9 +6,9 @@ from modules.data_loader import (
     COINS,
     get_crypto_data
 )
-from modules.indicators import (
-    add_features
-)
+#from modules.indicators import (
+#    add_features
+#)
 from modules.hybrid_model import (
     train_hybrid_model,
     future_forecast
